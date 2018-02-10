@@ -12,35 +12,7 @@ if (navigator.geolocation) {
             mapTypeId: 'hybrid'
         };
         var map = new google.maps.Map(document.getElementById("dvMap"), mapOptions);
-        //USE FOR PLACES AUTOCOMPLETE WHEN READY--- works but autocomplete pops up behind the modal still
-        var input = document.getElementById('autoComplete');
-        var autoComplete = new google.maps.places.Autocomplete(input);
-        var pacContainerInitialized = false; 
-
-        $('#autocomplete').keypress(function() { 
-                 if (!auContainerInitialized) { 
-                         $('.aucontainer').css('z-index', '9999'); 
-                         auContainerInitialized = true; 
-                 } 
-        }); 
-
-
-        
-        // var marker = new google.maps.Marker({
-        //     position: LatLng,
-        //     map: map,
-        //     title: "<div style = 'height:60px;width:200px'><b>Your location:</b><br />Latitude: " + p.coords.latitude + "<br />Longitude: " + p.coords.longitude
-        // });
     
-
-        // google.maps.event.addListener(marker, "click", function (e) {
-        //     var infoWindow = new google.maps.InfoWindow();
-        //     infoWindow.setContent(marker.title);
-        //     infoWindow.open(map, marker);
-        // })
-
-
-
         //  Populate Map Markers
         $.get("/api/getFindsFromDB", function(data) {
             console.log(data);
@@ -138,9 +110,7 @@ $('#submit__lost').on('click', () => {
     var lostName = $("#lostName").val().trim();
     var lostItem = $("#lostItem").val().trim();
     var lostDescription = $("#lostDescription").val().trim();
-    //var lostLat = $("#lostLat").val().trim();
     var lostAutoComplete = $("#autocomplete").val().trim();
-    //var lostLong = $("#lostLong").val().trim();
     var lostReward = $("#reward").val(); 
     
     //console.log(lostName + ' ' + lostItem + ' ' + lostDescription + ' ' + lostLat + ' ' + lostLong);
@@ -181,6 +151,7 @@ $('#submit__lost').on('click', () => {
     $("#lostLat").val('');
     $("#lostLong").val('');
     $("#lostLong").val('');
+    $("#lostAutocomplete").val('');
     $("#reward").val(''); 
     
     // Closes the Lost modal
@@ -268,6 +239,7 @@ $('.close').on('click', () => {
     $('#find__modal')[0].close();
 });
 
+//----AUTOCOMPLETE FOR LOST MODAL
 var input = document.getElementById("autocomplete");
 var autocomplete = new google.maps.places.Autocomplete(input, {types: ['geocode']});
 //var autocomplete = new google.maps.places.SearchBox(input);
@@ -276,10 +248,37 @@ console.log(input);
 autocomplete.addListener('place_changed', fillInAddress);
 function fillInAddress(){
     var  place = autocomplete.getPlace();
+    
+      }
+
+
+var lostAu = $('#autocomplete');
+lostAu.on('focus', function () {
+  var pacC = $('.pac-container');
+  $(lostAu.parent()).append(pacC);
+})
+
+//-----AUTOCOMPLETE FOR FIND MODAL
+
+var input = document.getElementById("findAutoComplete");
+var findAutoComplete = new google.maps.places.Autocomplete(input, {types: ['geocode']});
+console.log("I'm here");
+console.log(input); 
+findAutoComplete.addListener('place_changed', fillInAddress);
+function fillInAddress(){
+    var  place = findAutoComplete.getPlace();
+    
+      }
+
+
+var addressInputElement = $('#findAutoComplete');
+addressInputElement.on('focus', function () {
+  var pacContainer = $('.pac-container');
+  $(addressInputElement.parent()).append(pacContainer);
+})
 
 }
 
-}
 //PAGE LOADER ANIMATION//
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(function(){
