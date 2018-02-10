@@ -56,6 +56,14 @@ if (navigator.geolocation) {
                     markerFillColor = "#549D90";
                 }
                 
+                var titleText = '';
+                if(data[i].item == "redtesla"){
+                    titleText = '<iframe src="https://giphy.com/embed/l4pTsJiBeF7WzuApy" width="480" height="270" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/franklininstitute-space-tesla-l4pTsJiBeF7WzuApy">via GIPHY</a></p>';
+                }
+                else{
+                    titleText = "<div style = 'height:60px;width:200px;color:black;'><br />Missing Item: " + data[i].item + "<br />Description: " + data[i].description + "<br />Reward: " + data[i].reward
+                }
+
                 var loopMarker = new google.maps.Marker({
                   position: LatLngLoopMarker,
                   map: map,
@@ -71,7 +79,7 @@ if (navigator.geolocation) {
                     fillOpacity: 0.4,
                     strokeWeight: 0.4
                 },
-                  title: "<div style = 'height:60px;width:200px;color:black;'><br />Missing Item: " + data[i].item + "<br />Description: " + data[i].description + "<br />Reward: " + data[i].reward
+                  title: titleText
                 });
                 
                 google.maps.event.addListener(loopMarker, "click", function (e) {
